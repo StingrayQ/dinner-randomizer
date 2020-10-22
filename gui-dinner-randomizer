@@ -1,0 +1,142 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+import random
+from os import path
+
+root = Tk()
+root.title("Dinner Randomizer")
+
+d_item = []
+dinner_box = open('dinner_list.txt').read()
+# checks to see if the text file exists, if not it creates it
+if path.exists('dinner_list.txt'):
+    dinner_txt = open('dinner_list.txt', 'r+')
+    for line in d_item:
+        dinner_txt.writelines('%s\n' % line)
+
+    with open('dinner_list.txt', 'r+') as dinner_txt:
+        d_item = dinner_txt.readlines()
+        dinner_txt.close()
+        print(d_item)
+
+
+
+
+def randinner():
+    # pass
+    item = random.shuffle(d_item) # shuffles the list
+    item = d_item[1] #selects the item in the second position
+    randomDinnerItem.config(text=item)
+
+    print(item)
+
+
+# adds items to the list of food items and writes them to the text file
+# def add_list():
+#
+#     added_food = dinnerItem.get()
+#     if added_food == "":
+#         messagebox.showerror("Error", "Enter a valid food item")
+#     d_item.append(added_food + "\n")
+#     dinnerItem.delete(0, END)
+#     f = open('dinner_list.txt', 'a+')
+#     f.write(added_food)
+#     f.read()
+#     f.close()
+#     # dinnerList.insert(END, d_item[-1])
+#
+#
+#     # need to add a check to make sure you can't add the same food twice
+#     print(d_item)
+
+
+# removes items from the list of food items and writes changes to the text file
+# def remove_list():
+#     remove_food = dinnerItem.get()
+#     d_item.remove(remove_food)
+#     dinnerItem.delete(0, END) # removes text from entry widget
+#     f = open('dinner_list.txt', 'a+')
+#     for line in d_item:
+#         if remove_food in line:
+#             f.write(line)
+#     f.close()
+#     # dinnerList.delete('1.0', END)  # deletes contents of text widget
+#     # f = open('dinner_list.txt', 'a+')
+#     # for line in d_item:
+#     #     dinnerList.insert(INSERT, line)
+#
+#
+#     print(d_item)
+
+dinner_box = open('dinner_list.txt').read()
+
+# with open('names.txt', 'r') as f:
+    #     myNames = [line.strip() for line in f]
+
+    # need to add a check to make sure empty string can't be used
+    # need to add a popup saying that a good isn't listed if users try to remove a food not in list
+
+def addFood():
+    to_add = dinnerItem.get()
+    dinnerListBox.insert('end', to_add) # adds food item to the end position of listbox
+    dinnerItem.delete(0, 'end') # removes the text from the entry box
+    #added_food = dinnerItem.get()
+    if to_add == "":
+        messagebox.showerror("Error", "Enter a valid food item")
+    d_item.append(to_add + "\n")
+
+    #dinnerItem.delete(0, END)
+    f = open('dinner_list.txt', 'a+')
+    f.write(to_add)
+    f.read()
+    f.close()
+    # with open(dinner_list.txt, 'w') as dinner_txt:
+    #     dinner_txt.write(''.join(listbox1.get(0, END)))
+    #     dinner_txt.write('\n')
+    #     dinner_txt.close()
+
+    if to_add == "":
+        messagebox.showerror("Error", "Enter a valid food item")
+    print(glist)
+
+def remFood():
+    btn.config(command=lambda listbox=dinnerListBox: dinnerListBox.delete(ANCHOR))
+    print(glist)
+
+
+
+dinnerLabel = Label(root, text="Dinner Item")
+dinnerLabel.grid(row=1, column=0, pady=10)
+dinnerItem = ttk.Entry(root, width=30)
+dinnerItem.grid(row=1, column=1)
+# addFoodButton = ttk.Button(root, text="Add Food", command=add_list)
+# addFoodButton.grid(row=3, column=1, sticky=N+W)
+# removeFoodButton = ttk.Button(root, text="Remove Food", command=remove_list)
+# removeFoodButton.grid(row=3, column=1, sticky=N+E)
+calcButton = ttk.Button(root, text="Randomize!", command=randinner)
+calcButton.grid(row=4, column=1, pady=(10, 0))
+randomDinnerLabel = Label(root, text="Your Dinner for Tonight is ")
+randomDinnerLabel.grid(row=5, column=0, pady=(5, 0))
+randomDinnerItem = Label(root)
+randomDinnerItem.grid(row=5, column=1, pady=(15, 0)) #, font=arial, '12')
+# dinnerList = Text(root, width=15, height=8, padx=5)
+# dinnerList.grid(row=3, column=0)
+# dinnerList.insert(INSERT, dinner_box)
+dinnerListBox = Listbox(root)
+dinnerListBox.grid(row=3, column=5)
+dinnerListBox.insert(END)
+btn = Button(text="Delete", command=remFood)
+btn.grid(row=4, column=5)
+btn1 = Button(text='Add', command=addFood)
+btn1.grid(row=4, column=6)
+# scroll = Scrollbar(root, orient=VERTICAL, command=dinnerList.yview)
+# scroll.grid(row=3, column=0, rowspan=2, columnspan=2, sticky=NS)
+
+def glist():
+    listbox_list = dinnerListBox.get(0, END)
+    print(listbox_list)
+
+dinner_txt.close()
+root.geometry("500x300")
+root.mainloop()
